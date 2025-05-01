@@ -14,7 +14,7 @@ n = 12;  % Number of photodiodes
 
 % Simulation settings
 N_sims = 100;               % Number of simulations per sun direction
-sun_az_all = 0:2;         % Azimuth angles (degrees)
+sun_az_all = 0:359;         % Azimuth angles (degrees)
 sun_el_all = 1:90;          % Elevation angles (degrees)
 
 % Preallocate MSE matrix
