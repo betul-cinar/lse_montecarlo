@@ -52,12 +52,12 @@ for az_idx = 1:length(sun_az_all)
                 end
             end
 
-            if a < 3
-                % Too few sensors to triangulate
-                lse_az(d) = NaN;
-                lse_el(d) = NaN;
-                continue
-            end
+            % if a < 3
+            %     % Too few sensors to triangulate
+            %     lse_az(d) = NaN;
+            %     lse_el(d) = NaN;
+            %     continue
+            % end
 
             nv_sel = zeros(a, 3);
             halfangle_sel = zeros(1, a);
