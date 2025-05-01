@@ -4,7 +4,7 @@ clear;
 
 %%%%%%%%%%%%%% USER INPUT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Define cones with different half-angles
-n = 20; %HOW MANY CONES?
+n = 16; %HOW MANY CONES?
 
 
 %WE START TO SIMULATE SUN-SUNSENSOR INTERACTION HERE
@@ -14,10 +14,7 @@ coeff_inv = load("coeff_inverse.mat");
 
 %USER INPUT
 sensor_el_body = [0     , 21.91, 0      , 0      , 21.91, 0      , 35.26, 35.26, 35.26, 35.26, 69.09, 69.09, 34.545, 55.955, 34.545, 55.955, -28.585, -28.585, -28.585, -28.585];
-sensor_az_body = [20.905, 90   , 159.095, 200.905, 270  , 339.095, 45   , 135  , 225  , 315  , 0    , 180  , 0     , 90    , 180   , 270   , 51.968 , 128.03 , 231.968, 308.032];
-visualizeSunSensorCones([sensor_az_body' , sensor_el_body'], 10);
-
-
+sensor_az_body = [20.905, 90   , 159.095, 200.905, 270  , 339.095, 45   , 135  , 225  , 315  , 0    , 180  , 0     , 90    , 180   , 270   , 51.968 , 128.03 , 308.031,    ];
 %SUN COMING 
 sun_el = 1;
 sun_az = 85;

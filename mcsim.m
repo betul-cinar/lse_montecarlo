@@ -7,10 +7,13 @@ coeff = load("coeff_sensor.mat");
 coeff_inv = load("coeff_inverse.mat");
 
 % Sensor definitions
-sensor_el_body = [0     , 21.91, 0      , 0      , 21.91, 0      , 35.26, 35.26, 35.26, 35.26, 69.09, 69.09];
-sensor_az_body = [20.905, 90   , 159.095, 200.905, 270  , 339.095, 45   , 135  , 225  , 315  , 0    , 180];
+% n = 12;  % Number of photodiodes
+% sensor_el_body = [0     , 21.91, 0      , 0      , 21.91, 0      , 35.26, 35.26, 35.26, 35.26, 69.09, 69.09];
+% sensor_az_body = [20.905, 90   , 159.095, 200.905, 270  , 339.095, 45   , 135  , 225  , 315  , 0    , 180];
+n= 20;
+sensor_el_body = [0     , 21.91, 0      , 0      , 21.91, 0      , 35.26, 35.26, 35.26, 35.26, 69.09, 69.09, 34.545, 55.955, 34.545, 55.955, -28.585, -28.585, -28.585, -28.585];
+sensor_az_body = [20.905, 90   , 159.095, 200.905, 270  , 339.095, 45   , 135  , 225  , 315  , 0    , 180  , 0     , 90    , 180   , 270   , 51.968 , 128.03 , 231.968, 308.032];
 az_el = [sensor_az_body' sensor_el_body'];
-n = 12;  % Number of photodiodes
 
 % Simulation settings
 N_sims = 100;               % Number of simulations per sun direction
@@ -18,7 +21,7 @@ sun_az_all = 0:359;         % Azimuth angles (degrees)
 sun_el_all = 1:90;          % Elevation angles (degrees)
 
 % Preallocate MSE matrix
-MSE_map = zeros(360, 90);
+ERROR_MAP = zeros(360, 90);
 
 for az_idx = 1:length(sun_az_all)
     for el_idx = 1:length(sun_el_all)
@@ -89,7 +92,7 @@ for az_idx = 1:length(sun_az_all)
         % Compute estimated vectors
         est_valid = ~isnan(lse_az) & ~isnan(lse_el);
         if sum(est_valid) == 0
-            MSE_map(az_idx, el_idx) = NaN;
+            ERROR_MAP(az_idx, el_idx) = NaN;
         else
             x_est = cosd(lse_el(est_valid)) .* cosd(lse_az(est_valid));
             y_est = cosd(lse_el(est_valid)) .* sind(lse_az(est_valid));
@@ -98,7 +101,9 @@ for az_idx = 1:length(sun_az_all)
 
             % Calculate squared angular error
             angle_errors = acosd(dot(v_est, repmat(v_gt, size(v_est,1), 1), 2));
-            MSE_map(az_idx, el_idx) = mean(angle_errors.^2);
+            % MSE_map(az_idx, el_idx) = mean(angle_errors.^2);
+            ERROR_MAP(az_idx, el_idx) = mean(abs(angle_errors));
+
         end
     end
 
@@ -110,16 +115,18 @@ end
 % save('MSE_map.mat', 'MSE_map');
 %%
 % Assumes MSE_map is a 360x90 matrix (azimuth x elevation)
+load("MSE_map.mat")
+% figure('Name','Mean Squared Error Heatmap', 'Color','w');
+figure('Name','Mean Absolute Error Heatmap', 'Color','w');
 
-figure('Name','Mean Squared Error Heatmap', 'Color','w');
-imagesc(0:359, 1:90, MSE_map');  % Transpose to align elevation as Y-axis
+imagesc(0:359, 1:90, ERROR_MAP');  % Transpose to align elevation as Y-axis
 axis xy;  % Flip y-axis so 1 is bottom, 90 is top
 colormap(jet);  % Use jet colormap
 colorbar;
 xlabel('Sun Azimuth (°)');
 ylabel('Sun Elevation (°)');
-title('Mean Squared Error of Estimated Sun Direction (deg^2)');
-caxis([0, max(MSE_map(:), [], 'omitnan')]);  % Adjust color scale
+title('Mean Absolute Error of Estimated Sun Direction (deg)');
+caxis([0, max(ERROR_MAP(:), [], 'omitnan')]);  % Adjust color scale
 
 % Optional: mark high error zones
 % [row, col] = find(MSE_map > threshold); hold on; plot(row-1, col, 'k.')
