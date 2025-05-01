@@ -108,3 +108,19 @@ end
 
 % Save result if needed
 % save('MSE_map.mat', 'MSE_map');
+%%
+% Assumes MSE_map is a 360x90 matrix (azimuth x elevation)
+
+figure('Name','Mean Squared Error Heatmap', 'Color','w');
+imagesc(0:359, 1:90, MSE_map');  % Transpose to align elevation as Y-axis
+axis xy;  % Flip y-axis so 1 is bottom, 90 is top
+colormap(jet);  % Use jet colormap
+colorbar;
+xlabel('Sun Azimuth (°)');
+ylabel('Sun Elevation (°)');
+title('Mean Squared Error of Estimated Sun Direction (deg^2)');
+caxis([0, max(MSE_map(:), [], 'omitnan')]);  % Adjust color scale
+
+% Optional: mark high error zones
+% [row, col] = find(MSE_map > threshold); hold on; plot(row-1, col, 'k.')
+
