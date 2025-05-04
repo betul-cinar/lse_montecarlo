@@ -115,13 +115,15 @@ end
 % save('MSE_map.mat', 'MSE_map');
 %%
 % Assumes MSE_map is a 360x90 matrix (azimuth x elevation)
-load("MSE_map.mat")
+load("ERRROR_MAP_n20_MAE.mat")
 % figure('Name','Mean Squared Error Heatmap', 'Color','w');
 figure('Name','Mean Absolute Error Heatmap', 'Color','w');
 
 imagesc(0:359, 1:90, ERROR_MAP');  % Transpose to align elevation as Y-axis
 axis xy;  % Flip y-axis so 1 is bottom, 90 is top
-colormap(jet);  % Use jet colormap
+% colormap(CustomColormap);  % Use jet colormap
+colormap("jet");  % Use jet colormap
+
 colorbar;
 xlabel('Sun Azimuth (°)');
 ylabel('Sun Elevation (°)');
