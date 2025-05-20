@@ -1,8 +1,9 @@
-function plotCone(halfAngle, normalVec, faceColor,hideflag)
+function h = plotCone1(halfAngle, normalVec, faceColor)
     % Plot a single cone of unit length with the given halfAngle and direction normalVec.
-    
+    % Returns a surface handle `h` for use in legends.
+
     normalVec = normalVec(:) / norm(normalVec);  % Ensure it's a unit vector
-    
+
     L = 1; 
     r = L * tan(halfAngle);
     numPoints = 50; 
@@ -39,20 +40,13 @@ function plotCone(halfAngle, normalVec, faceColor,hideflag)
     Yr = reshape(conePoints(2,:), size(Y));
     Zr = reshape(conePoints(3,:), size(Z));
 
-    % Plot the cone
-    surf(Xr, Yr, Zr, ...
+    % Plot the cone and return its handle
+    h = surf(Xr, Yr, Zr, ...
         'FaceColor', faceColor, ...
         'EdgeColor','none', ...
-        'FaceAlpha', 0.5,'DisplayName','Sensor Cone');
+        'FaceAlpha', 0.5);
 
-    % Show the direction vector in black
-
-
-    if hideflag
-      quiver3(0, 0, 0, normalVec(1), normalVec(2), normalVec(3), ...
-        0.8, 'k', 'LineWidth', 2, 'HandleVisibility', 'off'); 
-    else
-       quiver3(0, 0, 0, normalVec(1), normalVec(2), normalVec(3), ...
-        0.8, 'k', 'LineWidth', 2, 'DisplayName','Sensor Normal Vector');  
-    end
+    % Plot the normal vector (black arrow)
+    quiver3(0, 0, 0, normalVec(1), normalVec(2), normalVec(3), ...
+        0.8, 'k', 'LineWidth', 2);
 end

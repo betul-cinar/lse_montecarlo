@@ -20,5 +20,5 @@ p_inv = polyfit(y,x,4);
 % hold on
 % plot(y1,x1,'r--')
 % legend('y','y1','f1')        %JUST IGNORE THIS PART, i took 'p_inv' as
-%                                   inverse coeff matrix even though i dont
-%                                   plot them
+% %                                   inverse coeff matrix even though i dont
+% %                                   plot them

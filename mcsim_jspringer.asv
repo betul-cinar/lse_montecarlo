@@ -3,16 +3,22 @@ clc;
 clear;
 
 % Load sensor model data
-coeff = load("coeff_sensor.mat");
-coeff_inv = load("coeff_inverse.mat");
+coeff = load("coeff_sensor_sfh.mat");
+coeff_inv = load("coeff_inverse_sfh.mat");
 
 % Sensor definitions
 % n = 12;  % Number of photodiodes
 % sensor_el_body = [0     , 21.91, 0      , 0      , 21.91, 0      , 35.26, 35.26, 35.26, 35.26, 69.09, 69.09];
 % sensor_az_body = [20.905, 90   , 159.095, 200.905, 270  , 339.095, 45   , 135  , 225  , 315  , 0    , 180];
-n= 20;
-sensor_el_body = [0     , 21.91, 0      , 0      , 21.91, 0      , 35.26, 35.26, 35.26, 35.26, 69.09, 69.09, 34.545, 55.955, 34.545, 55.955, -28.585, -28.585, -28.585, -28.585];
-sensor_az_body = [20.905, 90   , 159.095, 200.905, 270  , 339.095, 45   , 135  , 225  , 315  , 0    , 180  , 0     , 90    , 180   , 270   , 51.968 , 128.03 , 231.968, 308.032];
+n= 17;
+sensor_az_body = [ ...
+     17,   0,  -17, -162, 180, 162,  72, 107,  90, ...
+   -107, -72,  90,   0,    0,   0,    0,   0 ];
+
+sensor_el_body = [ ...
+    -10,  20, -10,  -10,  20, -10,  10,  10, -20, ...
+     10,  10, -20,  90,   90,  90, -90, -90 ];
+
 az_el = [sensor_az_body' sensor_el_body'];
 
 % Simulation settings
@@ -115,7 +121,7 @@ end
 % save('MSE_map.mat', 'MSE_map');
 %%
 % Assumes MSE_map is a 360x90 matrix (azimuth x elevation)
-load("ERRROR_MAP_n20_MAE.mat")
+% load("ERRROR_MAP_n20_MAE.mat")
 % figure('Name','Mean Squared Error Heatmap', 'Color','w');
 figure('Name','Mean Absolute Error Heatmap', 'Color','w');
 
